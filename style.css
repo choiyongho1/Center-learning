@@ -1,0 +1,24 @@
+.main {
+	border: solid 1px gray;
+}
+.b {
+	text-align: left;
+}
+.c {
+	text-align: right;
+}
+.d {
+	text-align: center;
+}
+.num {
+	text-align: center;
+	letter-spacing: 40px;
+	text-decoration:none;
+}
+.a > strong {
+	font-size: 70px;
+	 position: relative;
+        left: 20px;
+        bottom: 80px;
+
+}

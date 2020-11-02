@@ -1,0 +1,12 @@
+
+public class Example01 {
+
+	public static void main(String[] args) {
+		int[] nums = {1, 2, 3, 4};
+		for(int i = 1; int nums.length; i++) {
+			
+		}
+
+	}
+
+}

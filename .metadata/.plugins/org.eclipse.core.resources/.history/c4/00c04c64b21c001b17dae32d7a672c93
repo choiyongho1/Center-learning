@@ -1,0 +1,13 @@
+
+public class Example01 {
+
+	public static void main(String[] args) {
+		int[] nums = {1, 2, 3, 4};
+		int runningSum;
+		for(int i = 1; i<nums.length; i++) {
+			System.out.println(nums[i]);
+		}
+
+
+}
+}

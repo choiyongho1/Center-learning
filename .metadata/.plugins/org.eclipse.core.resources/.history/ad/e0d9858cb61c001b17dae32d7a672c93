@@ -1,0 +1,18 @@
+
+public class Example01 {
+
+	public static void main(String[] args) {
+		int[] nums = {1, 2, 3, 4};
+		int[] num = new int[3];
+		int runningSum = 0;
+		for(int i = 0; i<nums.length; i++) {
+			runningSum += nums[i];
+			System.out.println(runningSum);
+		}
+		for(int i = 0; i<nums.length; i++) {
+			System.out.println(num[i]);
+		}
+	
+
+}
+}
