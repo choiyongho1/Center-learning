@@ -9,7 +9,6 @@ public class Example01 {
 			runningSum += nums[i];
 			System.out.println(runningSum);
 		}
-		
 	
 
 }
