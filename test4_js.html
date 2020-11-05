@@ -1,0 +1,61 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>사슴에 관하여</title>
+</head>
+<body>
+    사슴에 관한 진실.
+</body>
+    <input type = "tect" id="color">
+    <input type = "button" value="change!" 
+        onclick="backgroundClorChangeToColorTextInput()">
+
+    <input type = "tect" id="color1">
+    <input type = "button" value="change!" 
+        onclick="backgroundClorChangeToColorTextInput1()">
+
+    <input type = "tect" id="color2">
+    <input type = "button" value="change!" 
+        onclick="backgroundClorChangeToColorTextInput2()">
+
+<script>
+    function backgroundClorChangeToColorTextInput() {
+        let typecolor = document.getElementById("color");
+        setInterval (() =>document.body.style.background = typecolor.value, 1000);
+}
+    function backgroundClorChangeToColorTextInput1() {
+        let typecolor1 = document.getElementById("color1");
+        setInterval (() =>document.body.style.background = typecolor1.value, 2000);
+}
+    function backgroundClorChangeToColorTextInput2() {
+        let typecolor3 = document.getElementById("color2");
+        setInterval (() =>document.body.style.background = typecolor3.value, 3000);
+}
+</script>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>사슴에 관하여</title>
+</head>
+<body>
+    사슴에 관한 진실.
+</body>
+    <input type = "tect" id="color">
+    <input type = "tect" id="color1">
+    <input type = "tect" id="color2">
+    <input type = "button" value="change!" 
+        onclick="backgroundClorChangeToColorTextInput()">
+
+<script>
+    function backgroundClorChangeToColorTextInput() {
+        let typecolor = document.getElementById("color");
+        setInterval (() =>document.body.style.background = typecolor.value, 1000);
+        let typecolor1 = document.getElementById("color1");
+        setInterval (() =>document.body.style.background = typecolor1.value, 2000);
+        let typecolor3 = document.getElementById("color2");
+        setInterval (() =>document.body.style.background = typecolor3.value, 3000);
+}
+    
+</script>
+</html>

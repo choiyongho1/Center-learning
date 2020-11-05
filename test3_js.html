@@ -6,11 +6,19 @@
 <body>
     사슴에 관한 진실.
 </body>
+    <input type = "tect" id="color" value="red">
+    <input type = "button" value="change!" 
+        onclick="backgroundClorChangeToColorTextInput()">
+
 <script>
-    // alert("BODY: " + document.title);
-    for (const elem of document.body.children) {
-        alert(elem.text);    
+    function backgroundClorChangeToColorTextInput() {
+        let typecolor = document.getElementById("color");
+    if(typecolor.value === "red" || typecolor.value === "orange" || typecolor.value === "blue" ) {
+        document.body.style.background = typecolor.value;
+    } else {
+        alert("변경하지 않는다.");
     }
+}
 </script>
 <a>
     사슴은 아름다운 동물입니다.
