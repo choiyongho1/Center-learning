@@ -8,12 +8,14 @@ document.body.style.background - "red";
 
 // 1초 후 원상태로 복구하기
 
-setTimeout(() => document.body.style.background = "yellow", 1000);
-setTimeout(() => document.body.style.background = "orange", 2000);
-setTimeout(() => document.body.style.background = "green",3000);
-setTimeout(() => document.body.style.background = "blue", 4000);
-setTimeout(() => document.body.style.background = "purple", 5000);
-setTimeout(() => document.body.style.background = "", 1000);
+setInterval  (() => document.body.style.background = "yellow", 700);
+setInterval  (() => document.body.style.background = "orange", 800);
+setInterval (() => document.body.style.background = "green", 900);
+setInterval (() => document.body.style.background = "blue", 1000);
+setInterval (() => document.body.style.background = "purple", 1100);
+setInterval (() => document.body.style.background = "", 1200);
+
+alert ( ` ${navigator.userAgent}, ${navigator.platform} `);
   </script>
 </body>
 
