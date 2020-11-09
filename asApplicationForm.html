@@ -1,0 +1,71 @@
+<html>
+    <body>
+        <p>이름</p> 
+        <input type="text" id="name"/>
+        <p>이메일</p>
+        <input type="text" id="email"/>
+        <p>제목</p>
+        <input type="text" id="title"/>
+        <p>설명</p>
+        <textarea type="text" id="explanation" cols = "23" rows = "10"></textarea>
+
+        <input type="button" value="제출" onclick="submission()"> 
+        <input type="button" value="다시쓰기" onclick="reset()">
+        <script>
+            function submission() {
+                const name = document.getElementById("name").value;
+                if (2 > name.length || name.length > 10) {
+                    alert("이름은 2~10 글자 사이어야만 합니다.");
+                    return false;
+                } 
+
+                const email = document.getElementById("email").value;
+                if (!email.includes("@") || email.indexOf("@") !== email.lastIndexOf("@")) {
+                    alert("이메일은 특수문자(@)를 포함하여야 하고, @는 하나만 쓸 수 있습니다.");
+                    return false;
+                }
+
+                const title = document.getElementById("title").value;
+                if (!isIncludeSpecialChar(title,["[",  "]"])) {
+                    alert("[분류] 제목명과 같은 포멧으로 작성해야 합니다.");
+                    return false;
+                }
+
+                const explanation = document.getElementById("explanation").value;
+                if (100 < explanation.length) {
+                    alert("설명은 100글자까지만 작성할 수 있습니다.");
+                    return false;
+                }
+                
+                const divide = title.split("[")[1].split("]")[0];
+                alert(divide);
+
+            function reset() {
+                const inputText = document.querySelectorAll("input[type = 'text']");
+                for(const text of inputText) {
+                    text.value = "";
+                }
+            }
+
+            alert("AS작성서를 완료했습니다.");
+                 return true;
+        }
+        
+        function isIncludeSpecialChar(password,special_char) {
+                    for (const text of special_char){
+                        if(password.includes(text)){
+                            return true;
+               } 
+           }
+           return false;
+        }
+
+        function reset() {
+                const inputText = document.querySelectorAll("input[type='text'], textarea");
+                for (const text of inputText) {
+                    text.value = "";
+                }
+            }
+        </script>
+    </body>
+</html>
