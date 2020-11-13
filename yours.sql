@@ -99,3 +99,70 @@ GROUP BY
     TO_CHAR(ORDER_DATE, 'YYYY-MM')
 ORDER BY 
     TO_CHAR(ORDER_DATE, 'YYYY-MM');
+
+-- 문제 5
+-- 안녕하세요 경영진입니다
+-- 데이터 중 가장 많이 팔린 상품명을 알고 싶습니다
+-- 두종류 전부 필요합니다 (많이 팔린 개수, 금액 가장 높은것) -- 쿼리 2개 작성해주세요
+-- 모든 시간 통틀어서 데이터 조회 후 회신 부탁드립니다
+
+-- 판매 개수 구하는법
+-- SUM(ORDER_COUNT), GROUP BY PRODUCT_ID
+
+-- 푸는 방법
+-- 1. PRODUCT - PAYMENT_HISTORY 조인 (이유 : 프로덕트에 상품명이 있고, 페이먼트 히스토리에 판매 정보가 있음)
+-- 2. PAYMENT_HISTORY 의 PRODUCT_ID 기준으로 GROUP BY 를 하신 다음에요
+-- 3. SELECT 할 컬럼은 PRODUCT.NAME, SUM(PAYMENT_HISTORY.ORDER_COUNT)
+
+SELECT
+    PRODUCT.NAME AS 상품명,
+    SUM(ORDER_COUNT) AS 판매개수,
+    MAX(ORDER_PRICE) AS 금액
+FROM
+    PAYMENT_HISTORY, PRODUCT
+WHERE
+    PAYMENT_HISTORY.PRODUCT_ID = PRODUCT.ID
+GROUP BY
+    PAYMENT_HISTORY.PRODUCT_ID, PRODUCT.NAME
+ORDER BY
+    SUM(ORDER_COUNT) DESC;
+
+-- 문제 6.
+-- 데이터중에 카테고리별 총 합계 금액이(PRODUCT 기준, 판매된 금액 아님) 가장 많은 카테고리를 찾아주세요.
+-- 총 합계 금액 - PRODUCT 의 PRICE 를 다 합친 가격을 의미합니다.
+
+SELECT
+    CATEGORY.NAME AS 카테고리명,
+    SUM(PRICE) AS 합계금액
+FROM
+    CATEGORY, PRODUCT
+WHERE
+    CATEGORY.ID = PRODUCT.CATEGORY_ID
+GROUP BY
+   CATEGORY.ID, CATEGORY.NAME; 
+
+-- 문제 7.
+-- PAYMENT HISTORY 테이블만 가지고
+-- 평균 단가가 10만원 이하인 판매 목록을 다 가져오세요
+-- PAYMENT_HISTORY 테이블 외 조인 금지
+-- 평균 단가 = 판매 금액 / 판매 개수
+
+SELECT 
+    PAYMENT_HISTORY.*,
+    ORDER_PRICE / ORDER_COUNT AS AVERAGE_PRICE
+FROM
+    PAYMENT_HISTORY
+WHERE
+    AVERAGE_PRICE <= 10;
+
+-- 문제 8.
+-- PAYMENT_HISTORY 에서 시도별 판매액을 출력해주세요
+
+SELECT
+    ADDRESS, SUM(ORDER_PRICE)
+FROM
+    PAYMENT_HISTORY
+GROUP BY
+    ADDRESS
+ORDER BY
+    SUM(ORDER_PRICE);
