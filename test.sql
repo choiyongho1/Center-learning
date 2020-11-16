@@ -18,12 +18,15 @@ WHERE
 
 SELECT
     MEMBER.NAME,
-    PAYMENT_HISTORY.ORDER_PRICE
+    AVG(PAYMENT_HISTORY.ORDER_PRICE) AS 평균
 FROM
     MEMBER, PAYMENT_HISTORY
 WHERE
-    PAYMENT_HISTORY.MEMBER_ID = MEMBER.ID AND 
-    PAYMENT_HISTORY.ORDER_PRICE >= 100000;
+    PAYMENT_HISTORY.MEMBER_ID = MEMBER.ID
+GROUP BY
+    PAYMENT_HISTORY.ORDER_PRICE, MEMBER.NAME
+HAVING
+    AVG(PAYMENT_HISTORY.ORDER_PRICE) >= 100000;
 
 -- 문제 3.
 -- 카테고리중 상품이 5개 이상 등록된 카테고리의 이름을 출력하세요
@@ -37,7 +40,7 @@ FROM
 WHERE
     PRODUCT.CATEGORY_ID = CATEGORY.ID
 GROUP BY
-   PRODUCT.NAME
+   CATEGORY.ID, CATEGORY.NAME
 HAVING
     COUNT(CATEGORY.ID) >= 5;
 
@@ -84,3 +87,84 @@ WHERE
 -- NAME 기준으로 PRODUCT 테이블에 있는 데이터(카테고리 id)를 CATALOGUE 테이블에 추가해 주시고
 -- CATALOGUE 테이블에서 FK(외래키) 를 설정해주세요
 -- 서브 쿼리 사용 필요
+
+ALTER TABLE CATALOGUE ADD CATEGORY_ID number NOT NULL;
+
+UPDATE CATALOGUE
+SET CATALOGUE.CATEGORY_ID =(SELECT
+CATEGORY_ID
+FROM PRODUCT
+WHERE CATALOGUE.NAME = PRODUCT.NAME
+);
+
+-- 문제 7.
+-- CATEGORY, MEMBER, PAYMENT_HISTORY, PRODUCT 테이블을 모두 조인하여
+-- 상품명, 카테고리명, 구매한 유저명, 구매 금액, 구매 개수를 출력하세요
+
+SELECT
+    PRODUCT.NAME AS 상품명,
+    CATEGORY.NAME AS 카테고리명,
+    MEMBER.NAME AS 구매유저,
+    PAYMENT_HISTORY.ORDER_PRICE AS 구매금액,
+    PAYMENT_HISTORY.ORDER_COUNT AS 구매개수
+FROM
+    CATEGORY, MEMBER, PAYMENT_HISTORY, PRODUCT
+WHERE 
+    PAYMENT_HISTORY.PRODUCT_ID = PRODUCT.ID AND PRODUCT.CATEGORY_ID = CATEGORY.ID AND  PAYMENT_HISTORY.MEMBER_ID = MEMBER.ID;
+
+-- 추가 문제 #2
+-- PRODUCT 테이블에서 상품명, 상품 설명을 가져오게끔 합니다
+-- 만약 상품 설명이 10글자 이상인 경우 "탁월한 생산성을 위..." 와 같이 10글자 이후에는 ... 을 붙혀 주고
+-- 10글자 미만인 경우 모두 출력되게끔 합니다 (... 이 붙어서는 안됩니다)
+-- oracle IF(https://coding-factory.tistory.com/451), SUBSTR(https://docs.oracle.com/cd/B19306_01/server.102/b14200/functions162.htm), ||(https://dpdpwl.tistory.com/80) 연산자 사용 필요
+
+SELECT
+    NAME AS 상품명,
+    CASE WHEN LENGTH(PRODUCT.DESCRIPTION) >= 10 THEN 
+        SUBSTR(DESCRIPTION, 0, 10) || '...'
+        ELSE
+           DESCRIPTION
+    END AS 설명
+FROM
+    PRODUCT
+    
+-- 문제 8.
+-- PAYMENT_HISTORY 와 PRODUCT 테이블을 사용하여 원산지별 판매 액수를 출력해주세요
+-- 만약, 원산지가 없는 경우 원산지 없음 이라고 나오게끔 작성해주세요
+-- NVL 함수 사용 (https://gent.tistory.com/189)
+
+SELECT 
+    NVL(PRODUCT.ORIGIN, '원산지 없음'),
+    SUM(ORDER_PRICE)
+FROM
+    PRODUCT, PAYMENT_HISTORY
+WHERE
+    PRODUCT.ID = PAYMENT_HISTORY.PRODUCT_ID
+GROUP BY 
+    PRODUCT.ORIGIN
+
+-- 문제 9.
+-- PAYMENT_HISTORY 에서 1월중 가장 단일 판매 액수가 높은 주문 건수를 찾아서
+-- 상품명, 구매한 유저명, 구매 금액, 구매 개수를 출력해주세요 (ROWNUM 구문을 사용해주세요, https://gent.tistory.com/254)
+SELECT
+    PRODUCT.NAME, MEMBER.NAME, PAYMENT_HISTORY.ORDER_PRICE, PAYMENT_HISTORY.ORDER_COUNT
+FROM
+    PRODUCT, MEMBER, PAYMENT_HISTORY
+WHERE 
+    PAYMENT_HISTORY.MEMBER_ID = MEMBER.ID AND
+    PAYMENT_HISTORY.PRODUCT_ID = PRODUCT.ID AND
+    TO_CHAR(PAYMENT_HISTORY.ORDER_DATE, 'YYYYMM') = '202001' AND
+    ROWNUM < 2
+ORDER BY
+    PAYMENT_HISTORY.ORDER_PRICE
+
+-- 문제 10.
+-- PAYMENT_HISTORY 에서 모든 기간의 일별 매출액을 출력해주세요
+SELECT 
+    TO_CHAR(ORDER_DATE, 'YYYYMMDD'), SUM(ORDER_PRICE)
+FROM
+    PAYMENT_HISTORY
+GROUP BY
+    TO_CHAR(ORDER_DATE, 'YYYYMMDD')
+ORDER BY
+    TO_CHAR(ORDER_DATE, 'YYYYMMDD');
